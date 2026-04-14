@@ -1,90 +1,78 @@
 # 🌿 FarmSmart AI - Premium Agricultural Intelligence
 
-**FarmSmart AI** is a professional-grade, nature-inspired agricultural dashboard designed to empower farmers with cutting-edge AI insights. Built for high accessibility, it bridges the gap between complex data and practical farming through a visually stunning, glassmorphic interface and multimodal AI capabilities.
+**FarmSmart AI** is a professional-grade, nature-inspired agricultural dashboard designed to empower farmers with cutting-edge AI insights. Built for high accessibility, it bridges the gap between complex data and practical farming through a visually stunning interface and multimodal AI capabilities.
 
 ---
 
-## ✨ Key Features
+## 🚀 Installation & Setup
 
-### 1. 🧠 Smart Crop Recommendation
-*   **Contextual Analysis**: Recommends the top 3 most profitable crops based on State, District, Soil Type, and Sowing Month.
-*   **Profit Projection**: Provides estimated profit ranges in **Indian Rupees (INR)** per acre.
-*   **Logic Explanation**: Gives a clear, 1-sentence scientific reason for each recommendation.
+To run this project locally, follow these steps:
 
-### 2. 👁️ Vision AI Soil Detection
-*   **Zero-Knowledge Input**: Designed for farmers who don't know their soil name. Users can simply upload a photo of their land soil.
-*   **Automatic Identification**: Integrated with **Gemini 1.5 Flash Vision** to detect soil types (Loamy, Clayey, etc.) and automatically populate the form fields.
-*   **Voice Confirmation**: Speaks out the detected soil type in the farmer's regional language to ensure clarity for illiterate users.
-
-### 3. 🏥 AI Health Scan (Plant Doctor)
-*   **Disease Diagnosis**: Detects crop diseases, pests, and nutrient deficiencies from a simple leaf photo.
-*   **Treatment Roadmap**: Provides severity ratings and a structured 3-step actionable treatment plan.
-*   **Interactive Scanning**: Features a high-fidelity "Laser Scan" UI animation during analysis.
-
-### 4. 🌍 Native Language & Accessibility
-*   **Multilingual Support**: Supports major Indian languages (Hindi, Punjabi, Marathi, Telugu, Bengali, Odia, etc.).
-*   **Cloud TTS (Voice Assistant)**: Integrated **Google Translate Cloud TTS** to read recommendations aloud, bypassing local device limitations.
-*   **Glassmorphic UI**: High-end aesthetic with rich forest gradients and "Nature-Tech" visual language.
-
----
-
-## 🛠️ Technical Stack
-
-*   **Logic**: [React.js](https://reactjs.org/) (Vite)
-*   **AI Engine**: [Google Gemini 1.5 Flash](https://aistudio.google.com/app/apikey)
-*   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-*   **Icons**: [Lucide React](https://lucide.dev/)
-*   **Animations**: [Framer Motion](https://www.framer.com/motion/)
-*   **Voice**: Google Translate Cloud TTS API
-
----
-
-## 🚀 Getting Started
-
-### 1. Prerequisites
-*   Node.js (v18 or higher)
-*   A Google Gemini API Key (get one at [Google AI Studio](https://aistudio.google.com/))
-
-### 2. Installation
+### 1. Repository Setup
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/farmsmart-ai.git
 
-# Navigate to project folder
+# Navigate to the project directory
 cd farmsmart-ui
+```
 
-# Install dependencies
+### 2. Dependency Installation
+This project uses several key libraries for its functionality. Run the following command to install everything at once:
+```bash
 npm install
 ```
 
-### 3. Configuration
-Create a `.env` file in the root directory and add your API Key:
+**What is being installed?**
+*   **`@google/generative-ai`**: The official SDK to communicate with Gemini 1.5 Flash.
+*   **`@vapi-ai/web`**: The SDK for our real-time conversational voice agent.
+*   **`framer-motion`**: Powers our smooth glassmorphic transitions and scanning animations.
+*   **`lucide-react`**: Provides our professional agricultural and UI iconography.
+*   **`tailwindcss`**: Our utility-first CSS framework for that premium "Nature-Tech" look.
+
+### 3. Environment Configuration
+Create a file named `.env` in the root directory and add your API keys:
 ```env
 VITE_GEMINI_API_KEY=your_gemini_api_key_here
+VITE_VAPI_PUBLIC_KEY=your_vapi_public_key_here
 ```
 
-### 4. Launch
+### 4. Start the Application
 ```bash
 npm run dev
 ```
-The app will be available at `http://localhost:5173`.
+The app will typically run at `http://localhost:5173/` or `5174/`.
 
 ---
 
-## 📂 Project Structure
+## 🧠 AI & Voice Integration Details
 
-*   `src/pages/Home.jsx`: Premium landing page with grand typography.
-*   `src/pages/Form.jsx`: The 2-step wizard containing Soil Vision AI logic.
-*   `src/pages/AIScan.jsx`: The crop disease diagnosis interface.
-*   `src/pages/Result.jsx`: Displays top picks, dealer maps, and voice options.
-*   `src/services/aiService.js`: Core Gemini API implementation for Vision and Text.
+### 1. Google Gemini 1.5 Flash Integration
+We selected **Gemini 1.5 Flash** for its speed and multimodal (Vision + Text) capabilities. It powers three core workflows:
+
+*   **Smart Recommendations**: The AI analyzes regional climatic data, soil type, and sowing month to predict the top 3 most profitable crops. It also provides estimated profit margins in **Indian Rupees (INR)**.
+*   **Vision-Based Soil Detection**: We implemented a multimodal prompt that allows Gemini to "look" at a photo of soil. It analyzes color and texture to identify the soil category (Loamy, Clayey, etc.), eliminating the need for farmers to know technical soil names.
+*   **AI Health Scan (Plant Doctor)**: The AI identifies diseases, pests, or nutrient deficiencies from leaf photos and generates a structured 3-step treatment roadmap.
+
+### 2. Vapi Conversational Agent Integration
+To meet the **Voice-First** requirement, we integrated **Vapi** to create a living conversational assistant rather than a static text reader.
+
+*   **Purpose**: Many farmers prefer speaking to reading. Vapi allows them to ask follow-up questions about crops, soil, or treatments in a natural way.
+*   **Contextual Sync**: Our integration captures the farmer's current state (Location, Soil, and Recommended Crops) and streams it directly to the Vapi Assistant. This means the AI actually *knows* what is on the user's screen.
+*   **High-Quality Audio**: Through Vapi, we leverage **11Labs** voices to provide a trustworthy, human-like voice that is easy for non-technical users to follow.
+
+---
+
+## ✨ Design Philosophy: "Nature-Tech"
+The UI is built with a **Glassmorphic** design system:
+*   **Visuals**: Uses soft forest greens, blurred overlays, and organic shadows to feel friendly yet premium.
+*   **Animations**: Includes a "Laser-Scan" bar for the Health Scan to give users visual feedback that the AI is hard at work.
+*   **Accessibility**: Features large typography, localized labels (Hindi, Punjabi, etc.), and a persistent Voice Assistant button.
 
 ---
 
 ## 📜 Disclaimer
 *This application provides AI-generated agricultural advice for informational purposes. For critical pesticide applications or financial decisions, users are encouraged to consult their local Agricultural Extension Officer or KVK (Krishi Vigyan Kendra).*
 
----
-
-### Developed for the [Hackathon Name/Event] 🚜
-🏆 **Aiming to revolutionize digital inclusion for rural farmers.**
+### Developed for the [Hackathon Event] 🚜
+🏆 **Revolutionizing digital inclusion for the global farming community.**

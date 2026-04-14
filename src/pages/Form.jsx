@@ -84,7 +84,11 @@ export default function Form({ onRecommendationReady }) {
     
     try {
       const data = await getCropRecommendation(location, district, pincode, landSize, soilType, sowingMonth);
-      onRecommendationReady(data);
+      onRecommendationReady(data, {
+        location,
+        district,
+        soilType
+      });
     } catch (err) {
       console.error(err);
       setError(err.message || 'Failed to generate recommendation.');

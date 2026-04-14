@@ -7,10 +7,17 @@ import Home from './pages/Home';
 import Form from './pages/Form';
 import Result from './pages/Result';
 import AIScan from './pages/AIScan';
+import VoiceAssistant from './components/VoiceAssistant';
 
 export default function App() {
   const [step, setStep] = useState('home'); // home, form, result, aiscan
   const [recommendationData, setRecommendationData] = useState(null);
+  const [farmContext, setFarmContext] = useState({
+    location: '',
+    district: '',
+    soilType: '',
+    recommendations: []
+  });
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-[#e8f1e9]">
@@ -33,8 +40,12 @@ export default function App() {
             {step === 'form' && (
               <Form 
                 key="form" 
-                onRecommendationReady={(data) => {
+                onRecommendationReady={(data, inputDetails) => {
                   setRecommendationData(data);
+                  setFarmContext({
+                    ...inputDetails,
+                    recommendations: data.recommendations || data
+                  });
                   setStep('result');
                 }}
               />
@@ -54,6 +65,9 @@ export default function App() {
 
           </AnimatePresence>
         </main>
+
+        {/* Global Conversational AI Agent */}
+        <VoiceAssistant farmContext={farmContext} />
 
         <footer className="py-12 text-center mt-auto">
            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">
