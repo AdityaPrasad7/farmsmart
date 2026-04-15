@@ -19,6 +19,9 @@ import Farmers from './pages/admin/Farmers';
 import Queries from './pages/admin/Queries';
 import ImageAnalysis from './pages/admin/ImageAnalysis';
 import Language from './pages/admin/Language';
+import ServiceProviderSidebar from './components/service-provider/ServiceProviderSidebar';
+import Products from './pages/service-provider/Products';
+import NearbyFarmers from './pages/service-provider/NearbyFarmers';
 
 const AUTH_STORAGE_KEY = 'farmsmart_auth_session';
 
@@ -77,7 +80,7 @@ export default function App() {
       return;
     }
     if (role === 'serviceProvider') {
-      navigate('/service-provider', { replace: true });
+      navigate('/service-provider/products', { replace: true });
       return;
     }
     navigate('/home', { replace: true });
@@ -147,10 +150,26 @@ export default function App() {
     );
   };
 
+  const ProtectedServiceProviderLayout = () => {
+    if (!isAuthenticated) return <Navigate to="/login" replace />;
+    if (userRole !== 'serviceProvider') return <Navigate to="/login" replace />;
+
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-emerald-50 via-white to-lime-50">
+        <div className="flex min-h-screen w-full flex-col lg:flex-row">
+          <ServiceProviderSidebar onLogout={handleLogout} />
+          <main className="flex-1 p-4 md:p-6">
+            <Outlet />
+          </main>
+        </div>
+      </div>
+    );
+  };
+
   const redirectAuthenticatedUser = () => {
     if (!isAuthenticated) return <Outlet />;
     if (userRole === 'admin') return <Navigate to="/admin/dashboard" replace />;
-    if (userRole === 'serviceProvider') return <Navigate to="/service-provider" replace />;
+    if (userRole === 'serviceProvider') return <Navigate to="/service-provider/products" replace />;
     return <Navigate to="/home" replace />;
   };
 
@@ -230,27 +249,10 @@ export default function App() {
         <Route path="/admin/language" element={<Language />} />
       </Route>
 
-      <Route
-        path="/service-provider"
-        element={
-          isAuthenticated && userRole === 'serviceProvider' ? (
-            <div className="min-h-screen bg-gradient-to-b from-emerald-50 via-white to-lime-50 p-6">
-              <div className="mx-auto max-w-3xl rounded-3xl border border-emerald-100 bg-white/90 p-6 shadow-sm">
-                <h2 className="text-2xl font-black text-slate-800">Service Provider Portal</h2>
-                <p className="mt-2 text-sm text-slate-600">Service provider module is ready for your next screens.</p>
-                <button
-                  onClick={handleLogout}
-                  className="mt-6 rounded-xl border border-red-100 bg-red-50 px-4 py-2 text-sm font-bold text-red-600 hover:bg-red-100"
-                >
-                  Logout
-                </button>
-              </div>
-            </div>
-          ) : (
-            <Navigate to="/login" replace />
-          )
-        }
-      />
+      <Route element={<ProtectedServiceProviderLayout />}>
+        <Route path="/service-provider/products" element={<Products />} />
+        <Route path="/service-provider/nearby-farmers" element={<NearbyFarmers />} />
+      </Route>
 
       <Route
         path="*"
@@ -262,7 +264,7 @@ export default function App() {
                 : userRole === 'admin'
                   ? '/admin/dashboard'
                   : userRole === 'serviceProvider'
-                    ? '/service-provider'
+                    ? '/service-provider/products'
                     : '/home'
             }
             replace
