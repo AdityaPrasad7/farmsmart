@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
 import { MapPin, LocateFixed } from 'lucide-react';
@@ -56,6 +57,8 @@ const buyers = [
 const cropOptions = ['All Crops', 'Ragi', 'Cotton', 'Rice', 'Maize', 'Sugarcane', 'Tur Dal'];
 
 export default function ServiceProviders() {
+  const { pathname } = useLocation();
+  const isDealersRoute = pathname.includes('/dealers');
   const [selectedCrop, setSelectedCrop] = useState('All Crops');
 
   const filteredBuyers = useMemo(() => {
@@ -79,8 +82,14 @@ export default function ServiceProviders() {
       <div className="rounded-3xl border border-emerald-100 bg-white/90 p-5 shadow-sm">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
-            <h2 className="text-2xl font-black text-slate-800">Buyer Discovery</h2>
-            <p className="mt-1 text-sm text-slate-600">Find nearby buyers and view crop-wise procurement points.</p>
+            <h2 className="text-2xl font-black text-slate-800">
+              {isDealersRoute ? 'Dealers network' : 'Buyer Discovery'}
+            </h2>
+            <p className="mt-1 text-sm text-slate-600">
+              {isDealersRoute
+                ? 'Verified dealers and procurement partners on the map.'
+                : 'Find nearby buyers and view crop-wise procurement points.'}
+            </p>
           </div>
           <div className="w-full md:w-72">
             <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-500">

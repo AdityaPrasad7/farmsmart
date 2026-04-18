@@ -1,6 +1,9 @@
-import { Sprout, Camera, User, LogOut } from 'lucide-react';
+import { Sprout, Camera, User, LogOut, LayoutDashboard } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar({ setStep, onLogout }) {
+  const navigate = useNavigate();
+
   return (
     <nav className="bg-white/70 backdrop-blur-md border-b border-emerald-100 px-6 py-4 flex justify-between items-center sticky top-0 z-50">
       <div className="flex items-center gap-2 cursor-pointer" onClick={() => setStep('home')}>
@@ -9,7 +12,15 @@ export default function Navbar({ setStep, onLogout }) {
         </div>
         <h1 className="text-xl font-black text-emerald-900 tracking-tight italic">FARM<span className="text-emerald-500 not-italic">SMART</span></h1>
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
+        <button
+          type="button"
+          onClick={() => navigate('/dashboard')}
+          className="flex items-center gap-2 text-emerald-800 font-bold text-sm bg-white/90 px-3 py-2 sm:px-4 rounded-full border border-emerald-200 hover:bg-emerald-50 transition shadow-sm"
+        >
+          <LayoutDashboard size={18} />
+          <span className="hidden sm:inline">Dashboard</span>
+        </button>
         <button onClick={() => setStep('aiscan')} className="hidden md:flex items-center gap-2 text-emerald-700 font-bold text-sm bg-emerald-50 px-4 py-2 rounded-full border border-emerald-100 hover:bg-emerald-100 transition">
           <Camera size={18} /> AI Health Scan
         </button>

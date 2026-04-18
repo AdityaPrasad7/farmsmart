@@ -2,11 +2,11 @@ import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
   Wheat,
-  Briefcase,
+  Store,
   Users,
   MessageSquare,
   Image,
-  Languages,
+  Settings,
   LogOut,
   Sprout,
 } from 'lucide-react';
@@ -14,11 +14,11 @@ import {
 const links = [
   { to: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/admin/crops', label: 'Crops', icon: Wheat },
-  { to: '/admin/service-providers', label: 'Service Providers', icon: Briefcase },
+  { to: '/admin/dealers', label: 'Dealers', icon: Store },
   { to: '/admin/farmers', label: 'Farmers', icon: Users },
   { to: '/admin/queries', label: 'Queries', icon: MessageSquare },
   { to: '/admin/image-analysis', label: 'Image Analysis', icon: Image },
-  { to: '/admin/language', label: 'Language', icon: Languages },
+  { to: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 
 export default function AdminSidebar({ onLogout }) {
@@ -30,7 +30,7 @@ export default function AdminSidebar({ onLogout }) {
             <Sprout className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">FarmSmart AI</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">KrishiVoice AI</p>
             <p className="text-sm font-black text-slate-800">Admin Panel</p>
           </div>
         </div>

@@ -5,6 +5,7 @@ import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from 'react
 // Component Imports
 import Navbar from './components/Navbar';
 import Home from './pages/farmer/Home';
+import FarmerDashboard from './pages/farmer/Dashboard';
 import Form from './pages/farmer/Form';
 import Result from './pages/farmer/Result';
 import AIScan from './pages/farmer/Aiscan';
@@ -12,6 +13,7 @@ import VoiceAssistant from './components/VoiceAssistant';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import AdminSidebar from './components/admin/AdminSidebar';
+import AdminTopNavbar from './components/admin/AdminTopNavbar';
 import Dashboard from './pages/admin/Dasboard';
 import Crops from './pages/admin/Crops';
 import ServiceProviders from './pages/admin/ServiceProviders';
@@ -19,6 +21,7 @@ import Farmers from './pages/admin/Farmers';
 import Queries from './pages/admin/Queries';
 import ImageAnalysis from './pages/admin/ImageAnalysis';
 import Language from './pages/admin/Language';
+import Settings from './pages/admin/Settings';
 import ServiceProviderSidebar from './components/service-provider/ServiceProviderSidebar';
 import Products from './pages/service-provider/Products';
 import NearbyFarmers from './pages/service-provider/NearbyFarmers';
@@ -83,7 +86,7 @@ export default function App() {
       navigate('/service-provider/products', { replace: true });
       return;
     }
-    navigate('/home', { replace: true });
+    navigate('/dashboard', { replace: true });
   };
 
   const handleLogout = () => {
@@ -142,9 +145,12 @@ export default function App() {
       <div className="min-h-screen bg-gradient-to-b from-emerald-50 via-white to-lime-50">
         <div className="flex min-h-screen w-full flex-col lg:flex-row">
           <AdminSidebar onLogout={handleLogout} />
-          <main className="flex-1 p-4 md:p-6">
-            <Outlet />
-          </main>
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+            <AdminTopNavbar />
+            <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+              <Outlet />
+            </main>
+          </div>
         </div>
       </div>
     );
@@ -170,7 +176,7 @@ export default function App() {
     if (!isAuthenticated) return <Outlet />;
     if (userRole === 'admin') return <Navigate to="/admin/dashboard" replace />;
     if (userRole === 'serviceProvider') return <Navigate to="/service-provider/products" replace />;
-    return <Navigate to="/home" replace />;
+    return <Navigate to="/dashboard" replace />;
   };
 
   return (
@@ -207,6 +213,7 @@ export default function App() {
           path="/home"
           element={<Home key={location.pathname} setStep={routeFromStep} />}
         />
+        <Route path="/dashboard" element={<FarmerDashboard />} />
         <Route
           path="/form"
           element={(
@@ -243,10 +250,12 @@ export default function App() {
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/crops" element={<Crops />} />
         <Route path="/admin/service-providers" element={<ServiceProviders />} />
+        <Route path="/admin/dealers" element={<ServiceProviders />} />
         <Route path="/admin/farmers" element={<Farmers />} />
         <Route path="/admin/queries" element={<Queries />} />
         <Route path="/admin/image-analysis" element={<ImageAnalysis />} />
         <Route path="/admin/language" element={<Language />} />
+        <Route path="/admin/settings" element={<Settings />} />
       </Route>
 
       <Route element={<ProtectedServiceProviderLayout />}>
@@ -265,7 +274,7 @@ export default function App() {
                   ? '/admin/dashboard'
                   : userRole === 'serviceProvider'
                     ? '/service-provider/products'
-                    : '/home'
+                    : '/dashboard'
             }
             replace
           />
