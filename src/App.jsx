@@ -21,7 +21,7 @@ import Queries from './pages/admin/Queries';
 import ImageAnalysis from './pages/admin/ImageAnalysis';
 import Language from './pages/admin/Language';
 import Settings from './pages/admin/Settings';
-import ServiceProviderSidebar from './components/service-provider/ServiceProviderSidebar';
+import DealerSidebar from './components/dealer/DealerSidebar';
 import Products from './pages/service-provider/Products';
 import NearbyFarmers from './pages/service-provider/NearbyFarmers';
 
@@ -33,9 +33,14 @@ function loadAuthSession() {
     if (!raw) return { isAuthenticated: false, role: null };
 
     const parsed = JSON.parse(raw);
+    let role = parsed?.role || null;
+    if (role === 'serviceProvider') {
+      role = 'dealer';
+      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({ ...parsed, role: 'dealer' }));
+    }
     return {
       isAuthenticated: Boolean(parsed?.isAuthenticated),
-      role: parsed?.role || null,
+      role,
     };
   } catch {
     return { isAuthenticated: false, role: null };
@@ -81,8 +86,8 @@ export default function App() {
       navigate('/admin/dashboard', { replace: true });
       return;
     }
-    if (role === 'serviceProvider') {
-      navigate('/service-provider/products', { replace: true });
+    if (role === 'dealer') {
+      navigate('/dealer/products', { replace: true });
       return;
     }
     navigate('/home', { replace: true });
@@ -155,14 +160,14 @@ export default function App() {
     );
   };
 
-  const ProtectedServiceProviderLayout = () => {
+  const ProtectedDealerLayout = () => {
     if (!isAuthenticated) return <Navigate to="/login" replace />;
-    if (userRole !== 'serviceProvider') return <Navigate to="/login" replace />;
+    if (userRole !== 'dealer') return <Navigate to="/login" replace />;
 
     return (
       <div className="min-h-screen bg-gradient-to-b from-emerald-50 via-white to-lime-50">
         <div className="flex min-h-screen w-full flex-col lg:flex-row">
-          <ServiceProviderSidebar onLogout={handleLogout} />
+          <DealerSidebar onLogout={handleLogout} />
           <main className="flex-1 p-4 md:p-6">
             <Outlet />
           </main>
@@ -174,7 +179,7 @@ export default function App() {
   const redirectAuthenticatedUser = () => {
     if (!isAuthenticated) return <Outlet />;
     if (userRole === 'admin') return <Navigate to="/admin/dashboard" replace />;
-    if (userRole === 'serviceProvider') return <Navigate to="/service-provider/products" replace />;
+    if (userRole === 'dealer') return <Navigate to="/dealer/products" replace />;
     return <Navigate to="/home" replace />;
   };
 
@@ -256,10 +261,13 @@ export default function App() {
         <Route path="/admin/settings" element={<Settings />} />
       </Route>
 
-      <Route element={<ProtectedServiceProviderLayout />}>
-        <Route path="/service-provider/products" element={<Products />} />
-        <Route path="/service-provider/nearby-farmers" element={<NearbyFarmers />} />
+      <Route element={<ProtectedDealerLayout />}>
+        <Route path="/dealer/products" element={<Products />} />
+        <Route path="/dealer/nearby-farmers" element={<NearbyFarmers />} />
       </Route>
+
+      <Route path="/service-provider/products" element={<Navigate to="/dealer/products" replace />} />
+      <Route path="/service-provider/nearby-farmers" element={<Navigate to="/dealer/nearby-farmers" replace />} />
 
       <Route
         path="*"
@@ -270,8 +278,8 @@ export default function App() {
                 ? '/login'
                 : userRole === 'admin'
                   ? '/admin/dashboard'
-                  : userRole === 'serviceProvider'
-                    ? '/service-provider/products'
+                  : userRole === 'dealer'
+                    ? '/dealer/products'
                     : '/home'
             }
             replace

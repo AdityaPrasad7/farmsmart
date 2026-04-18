@@ -2,11 +2,11 @@ import { NavLink } from 'react-router-dom';
 import { Package, Users, LogOut, Tractor } from 'lucide-react';
 
 const links = [
-  { to: '/service-provider/products', label: 'Products', icon: Package },
-  { to: '/service-provider/nearby-farmers', label: 'Requests & Map', icon: Users },
+  { to: '/dealer/products', label: 'Products', icon: Package },
+  { to: '/dealer/nearby-farmers', label: 'Requests & Map', icon: Users },
 ];
 
-export default function ServiceProviderSidebar({ onLogout }) {
+export default function DealerSidebar({ onLogout }) {
   return (
     <aside className="w-full shrink-0 border-r border-emerald-100 bg-white/85 backdrop-blur-md lg:w-72">
       <div className="flex h-full flex-col p-4">
@@ -15,8 +15,8 @@ export default function ServiceProviderSidebar({ onLogout }) {
             <Tractor className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-emerald-600"> FarmSmart AI</p>
-            <p className="text-sm font-black text-slate-800">Service Provider</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">FarmSmart AI</p>
+            <p className="text-sm font-black text-slate-800">Dealer</p>
           </div>
         </div>
 
@@ -43,6 +43,7 @@ export default function ServiceProviderSidebar({ onLogout }) {
         </nav>
 
         <button
+          type="button"
           onClick={onLogout}
           className="mt-auto flex items-center justify-center gap-2 rounded-xl border border-red-100 bg-red-50 px-3 py-2.5 text-sm font-bold text-red-600 transition hover:bg-red-100"
         >

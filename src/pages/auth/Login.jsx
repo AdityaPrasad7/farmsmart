@@ -340,7 +340,7 @@ export default function Login({ onSubmit, onToggleAuth }) {
                   >
                     <option value="admin">Admin</option>
                     <option value="farmer">Farmer</option>
-                    <option value="serviceProvider">Service Provider</option>
+                    <option value="dealer">Dealer</option>
                   </select>
                 </div>
               </div>
