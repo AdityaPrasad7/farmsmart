@@ -6,7 +6,7 @@ export default function AdminTopNavbar() {
       <div className="flex h-14 items-center justify-between gap-4 px-4 md:h-16 md:px-6 lg:px-8">
         <div className="min-w-0">
           <h1 className="truncate text-lg font-black tracking-tight text-slate-900 md:text-xl">
-            KrishiVoice AI
+            FarmSmart AI
           </h1>
           <p className="hidden text-[11px] font-semibold uppercase tracking-widest text-emerald-600 sm:block">
             Command center

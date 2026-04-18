@@ -5,7 +5,6 @@ import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from 'react
 // Component Imports
 import Navbar from './components/Navbar';
 import Home from './pages/farmer/Home';
-import FarmerDashboard from './pages/farmer/Dashboard';
 import Form from './pages/farmer/Form';
 import Result from './pages/farmer/Result';
 import AIScan from './pages/farmer/Aiscan';
@@ -86,7 +85,7 @@ export default function App() {
       navigate('/service-provider/products', { replace: true });
       return;
     }
-    navigate('/dashboard', { replace: true });
+    navigate('/home', { replace: true });
   };
 
   const handleLogout = () => {
@@ -176,7 +175,7 @@ export default function App() {
     if (!isAuthenticated) return <Outlet />;
     if (userRole === 'admin') return <Navigate to="/admin/dashboard" replace />;
     if (userRole === 'serviceProvider') return <Navigate to="/service-provider/products" replace />;
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/home" replace />;
   };
 
   return (
@@ -213,7 +212,6 @@ export default function App() {
           path="/home"
           element={<Home key={location.pathname} setStep={routeFromStep} />}
         />
-        <Route path="/dashboard" element={<FarmerDashboard />} />
         <Route
           path="/form"
           element={(
@@ -274,7 +272,7 @@ export default function App() {
                   ? '/admin/dashboard'
                   : userRole === 'serviceProvider'
                     ? '/service-provider/products'
-                    : '/dashboard'
+                    : '/home'
             }
             replace
           />

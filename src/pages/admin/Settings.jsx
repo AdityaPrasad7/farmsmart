@@ -21,7 +21,7 @@ export default function Settings() {
           </span>
           <div className="flex-1">
             <p className="font-bold text-slate-900">Languages &amp; voice</p>
-            <p className="text-sm text-slate-500">Locales supported by KrishiVoice AI</p>
+            <p className="text-sm text-slate-500">Locales supported by FarmSmart AI</p>
           </div>
         </Link>
 

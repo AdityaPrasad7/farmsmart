@@ -15,7 +15,7 @@ export default function ServiceProviderSidebar({ onLogout }) {
             <Tractor className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">KrishiVoice AI</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-emerald-600"> FarmSmart AI</p>
             <p className="text-sm font-black text-slate-800">Service Provider</p>
           </div>
         </div>
