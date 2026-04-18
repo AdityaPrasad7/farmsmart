@@ -9,12 +9,47 @@ if (apiKey) {
   genAI = new GoogleGenerativeAI(apiKey);
 }
 
+const MODEL_CANDIDATES = [
+  "gemini-2.5-flash",
+  "gemini-2.0-flash-001",
+  "gemini-2.0-flash",
+  "gemini-2.5-flash-lite"
+];
+
+const isModelNotFoundError = (error) => {
+  const message = String(error?.message || "").toLowerCase();
+  return (
+    message.includes("is not found") ||
+    message.includes("not supported for generatecontent") ||
+    message.includes("unsupported") ||
+    message.includes("404")
+  );
+};
+
+const generateWithFallbackModels = async (promptOrParts) => {
+  let lastError = null;
+
+  for (const modelName of MODEL_CANDIDATES) {
+    try {
+      const model = genAI.getGenerativeModel({ model: modelName });
+      const result = await model.generateContent(promptOrParts);
+      return result;
+    } catch (error) {
+      if (!isModelNotFoundError(error)) {
+        throw error;
+      }
+      lastError = error;
+      console.warn(`Model "${modelName}" unavailable, trying fallback model...`);
+    }
+  }
+
+  throw lastError || new Error("No compatible Gemini model is available for generateContent.");
+};
+
 export const getCropRecommendation = async (stateLocation, district, pincode, landSize, soilType, sowingMonth) => {
   if (!genAI) {
     throw new Error("Gemini API Key is missing. Please add VITE_GEMINI_API_KEY to your .env file.");
   }
-
-  const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
   const prompt = `
     You are an expert agricultural AI assistant.
@@ -48,7 +83,7 @@ export const getCropRecommendation = async (stateLocation, district, pincode, la
   `;
 
   try {
-    const result = await model.generateContent(prompt);
+    const result = await generateWithFallbackModels(prompt);
     const response = await result.response;
     const text = response.text();
     
@@ -80,8 +115,6 @@ export const detectSoilFromImage = async (base64Data, mimeType) => {
     throw new Error("Gemini API Key is missing. Please add VITE_GEMINI_API_KEY to your .env file.");
   }
 
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
   const prompt = `
     You are an expert agronomist. 
     Analyze this image of soil and determine its primary soil type based on visual characteristics (color, clumping, texture).
@@ -100,7 +133,7 @@ export const detectSoilFromImage = async (base64Data, mimeType) => {
   ];
 
   try {
-    const result = await model.generateContent([prompt, ...imageParts]);
+    const result = await generateWithFallbackModels([prompt, ...imageParts]);
     const response = await result.response;
     const text = response.text().trim();
     
@@ -120,8 +153,6 @@ export const analyzeCropHealth = async (base64Data, mimeType) => {
     throw new Error("Gemini API Key is missing.");
   }
 
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
   const prompt = `
     You are an expert plant pathologist. 
     Analyze this photo of a crop/leaf and provide a health diagnosis.
@@ -137,7 +168,7 @@ export const analyzeCropHealth = async (base64Data, mimeType) => {
   const imageParts = [{ inlineData: { data: base64Data, mimeType } }];
 
   try {
-    const result = await model.generateContent([prompt, ...imageParts]);
+    const result = await generateWithFallbackModels([prompt, ...imageParts]);
     const response = await result.response;
     let text = response.text().trim();
     
